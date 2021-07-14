@@ -227,7 +227,7 @@ export class Dapp extends React.Component {
     // We first initialize ethers by creating a provider using window.ethereum
     this._provider = new ethers.providers.Web3Provider(window.ethereum);
 
-    // Then, we initialize the contract using that provider and the token's
+    // When, we initialize the contract using that provider and the token's
     // artifact. You can do this same thing with your contracts.
     this._token = new ethers.Contract(
       contractAddress.Token,
@@ -236,7 +236,7 @@ export class Dapp extends React.Component {
     );
   }
 
-  // The next to methods are needed to start and stop polling data. While
+  // The next two methods are needed to start and stop polling data. While
   // the data being polled here is specific to this example, you can use this
   // pattern to read any data from your contracts.
   //
