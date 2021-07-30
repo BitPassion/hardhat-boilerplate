@@ -19,10 +19,11 @@ import { TransactionErrorMessage } from "./TransactionErrorMessage";
 import { WaitingForTransactionMessage } from "./WaitingForTransactionMessage";
 import { NoTokensMessage } from "./NoTokensMessage";
 
-// This is the Hardhat Network id, you might change it in the hardhat.config.js
+// This is the Hardhat Network id, you might change it in the hardhat.config.js.
+// If you are using MetaMask, be sure to change the Network id to 1337.
 // Here's a list of network ids https://docs.metamask.io/guide/ethereum-provider.html#properties
 // to use when deploying to other networks.
-const HARDHAT_NETWORK_ID = '31337';
+const HARDHAT_NETWORK_ID = '1337';
 
 // This is an error code that indicates that the user canceled a transaction
 const ERROR_CODE_TX_REJECTED_BY_USER = 4001;
@@ -173,7 +174,7 @@ export class Dapp extends React.Component {
 
     // To connect to the user's wallet, we have to run this method.
     // It returns a promise that will resolve to the user's address.
-    const [selectedAddress] = await window.ethereum.request({ method: 'eth_requestAccounts' });
+    const [selectedAddress] = await window.ethereum.enable();
 
     // Once we have the address, we can initialize the application.
 
@@ -199,7 +200,7 @@ export class Dapp extends React.Component {
     });
     
     // We reset the dapp state if the network is changed
-    window.ethereum.on("chainChanged", ([networkId]) => {
+    window.ethereum.on("networkChanged", ([networkId]) => {
       this._stopPollingData();
       this._resetState();
     });
@@ -342,11 +343,7 @@ export class Dapp extends React.Component {
   // This is an utility method that turns an RPC error into a human readable
   // message.
   _getRpcErrorMessage(error) {
-    if (error.data) {
-      return error.data.message;
-    }
-
-    return error.message;
+    return error.data ? error.data.message : error.message;
   }
 
   // This method resets the state
