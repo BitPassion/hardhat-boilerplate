@@ -2,7 +2,7 @@
 
 // Solidity files have to start with this pragma.
 // It will be used by the Solidity compiler to validate its version.
-pragma solidity ^0.7.0;
+pragma solidity ^0.8.9;
 
 // We import this library to be able to use console.log
 import "hardhat/console.sol";
@@ -23,17 +23,16 @@ contract Token {
     // A mapping is a key/value map. Here we store each account balance.
     mapping(address => uint256) balances;
 
-    event Transfer(address to, uint256 amount);
+    // The Transfer event helps off-chain aplications understand
+    // what happens within your contract.
+    event Transfer(address indexed _from, address indexed _to, uint256 _value);
 
     /**
      * Contract initialization.
-     *
-     * The `constructor` is executed only once when the contract is created.
-     * The `public` modifier makes a function callable from outside the contract.
      */
     constructor() {
-        // The totalSupply is assigned to transaction sender, which is the account
-        // that is deploying the contract.
+        // The totalSupply is assigned to the transaction sender, which is the
+        // account that is deploying the contract.
         balances[msg.sender] = totalSupply;
         owner = msg.sender;
     }
@@ -62,7 +61,7 @@ contract Token {
         balances[msg.sender] -= amount;
         balances[to] += amount;
 
-        emit Transfer(to, amount);
+        emit Transfer(msg.sender, to, amount);
     }
 
     /**
